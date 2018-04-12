@@ -13,14 +13,27 @@ ArrayList<PVector>turns;
 Pacman player;
 
 int playerSpeed=2;
+int ghostSpeed=2;
 
-boolean debugGrid=true;
+Ghost blinky;
+Ghost pinky;
+Ghost clyde;
+Ghost inky;
+
+boolean debugBlinky=false;
+boolean debugPinky=false;
+boolean debugClyde=false;
+boolean debugInky=true;
+
+boolean debugGrid=false;
 boolean debugTurns=false;
 boolean debugCollision=false;
 boolean debugPlayerPos=false;
 boolean debugPlayerMoves=false;
 boolean debugPlayerProjected=false;
-
+boolean canGo(float x,float y){
+  return canGo(int(x),int(y));
+}
 boolean canGo(int x, int y) {
   if (x<0)return false;
   if (y<0)return false;
@@ -61,6 +74,10 @@ void setup() {
       if (c=='.')dots.add(new PVector(x*16, y*16));
     }
   }
+  blinky=new GhostBlinky();
+  pinky=new GhostPinky();
+  clyde=new GhostClyde();
+  inky=new GhostInky();
 }
 //Path p=new Path();
 void mousePressed() {
@@ -112,69 +129,22 @@ void draw() {
       }
     }
   }
-  PVector pacmanPos=player.getGridPos();
-  playerX=int(pacmanPos.x);
-  playerY=int(pacmanPos.y);
-  ArrayList<Node>visited=new ArrayList<Node>();
-  ArrayList<Node>open=new ArrayList<Node>();
-  int i=0;
-  //Node current
-  Node start=new Node(0,1,1,null);
-  open.add(start);
-  visited.add(new Node(0,2,1,null));
-  boolean loopDone=false;
-  while(i<=20000&&!loopDone){
-    i++;
-    if(open.size()<1)continue;
-
-    Node current=
-    lowestScore(open);
-    //open.get(int(random(open.size())));
-    //open.get(0);
-    //open.get(open.size()-1);
-    if(current.done)continue;
-    current.done=true;
-    if(current.x==playerX&&current.y==playerY)loopDone=true;
-    if(containsNode(visited,current))continue;
-    current.done=true;
-    open=removeNode(open,current);
-    visited.add(current);
-    ArrayList<Node>adjacent=current.getAdjacent();
-    open.addAll(adjacent);
-  }
-  for(Node n:visited){
-    //if(n.done)fill(255,0,0);
-    //else 
-    float f=map(n.gscore,0,20,0,255);
-    fill(f,f,255);
-    rect(n.x*16,n.y*16,16,16);
-  }
-  for(Node n:open){
-    //if(n.done)fill(255,0,0);
-    //else 
-    float f=map(n.gscore,0,20,0,255);
-    fill(f,f,255);
-    rect(n.x*16,n.y*16,16,16);
-  }
-  Path p=new Path();
-  Node playerNode=null;
-  for(Node n:visited){
-    if(n.x==playerX&&n.y==playerY){
-      playerNode=n;
-    }
-  }
-  p.addPoint(playerNode);
-  Node n=playerNode;
-  for(;n!=null;){
-    p.addPoint(n.from);
-    n=n.from;
-  }
-  p.display(color(255,0,0),16.0);
-  //Path p=pathFind(new PVector(1,1),player.getGridPos());
-  //p.display(color(255, 0, 0));
+  playerX=int(player.pos.x/16);
+  playerY=int(player.pos.y/16);
+  //Path p=pathFind(playerX,playerY,2,1,3,1);
+  //p.display(color(255,0,0),16.0);
   
   pushStyle();
   player.display();
   popStyle();
+  
+  blinky.update();
+  blinky.display();
+  pinky.update();
+  pinky.display();
+  clyde.update();
+  clyde.display();
+  inky.update();
+  inky.display();
 }
 int playerX=0,playerY=0;

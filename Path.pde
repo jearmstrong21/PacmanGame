@@ -38,7 +38,7 @@ class Path {
     stroke(col);
     PVector a=vecs.get(i1);
     PVector b=vecs.get(i2);
-    line(a.x*scale,a.y*scale,b.x*scale,b.y*scale);
+    line(a.x*scale+8,a.y*scale+8,b.x*scale+8,b.y*scale+8);
     popStyle();
   }
   void drawPoint(int i,color col,float scale){
@@ -47,7 +47,7 @@ class Path {
     fill(col);
     noStroke();
     PVector p=vecs.get(i);
-    ellipse(p.x*scale,p.y*scale,5,5);
+    ellipse(p.x*scale+8,p.y*scale+8,5,5);
     popStyle();
   }
 }

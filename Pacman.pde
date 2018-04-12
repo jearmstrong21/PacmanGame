@@ -1,18 +1,20 @@
 class Pacman {
   PVector pos;
-  PVector intPos;
   PVector off;
   Dir dir;
   Dir pendingDir;
   Pacman() {
     pos=new PVector(1, 1);
-    intPos=new PVector(0, 0);
-    turningPoint=new PVector(0, 0);
     off=new PVector(0, 0);
     dir=Dir.XPL;
     pendingDir=Dir.XPL;
   }
-  PVector turningPoint;
+  PVector getDPos(){
+    return new PVector(getDX(dir),getDY(dir));
+  }
+  PVector getDPendingPos(){
+    return new PVector(getDX(pendingDir),getDY(pendingDir));
+  }
   void display() {
     //pos.x=((mouseX)/16)*16;
     //pos.y=((mouseY)/16)*16;
