@@ -4,6 +4,7 @@ class Path {
     vecs=new ArrayList<PVector>();
   }
   void addPoint(Node n){
+    if(n==null)return;
     addPoint(n.x,n.y);
   }
   void addPoint(PVector p) {

@@ -103,9 +103,6 @@ void draw() {
     stroke(dotColor);
     ellipse(p.x+8, p.y+8, 6, 6);
   }
-  pushStyle();
-  player.display();
-  popStyle();
   if (debugGrid) {
     for (int x=0; x<28; x++) {
       for (int y=0; y<31; y++) {
@@ -115,90 +112,69 @@ void draw() {
       }
     }
   }
-  ArrayList<Node>openNodes=new ArrayList<Node>();
-  ArrayList<Node>closedNodes=new ArrayList<Node>();
+  PVector pacmanPos=player.getGridPos();
+  playerX=int(pacmanPos.x);
+  playerY=int(pacmanPos.y);
+  ArrayList<Node>visited=new ArrayList<Node>();
+  ArrayList<Node>open=new ArrayList<Node>();
   int i=0;
-  Node current=new Node(0,1,1,null);
-  openNodes.add(current);
-  while(i<=1){
+  //Node current
+  Node start=new Node(0,1,1,null);
+  open.add(start);
+  visited.add(new Node(0,2,1,null));
+  boolean loopDone=false;
+  while(i<=20000&&!loopDone){
     i++;
-    if(openNodes.size()<1)continue;
-    current=lowestScore(openNodes);
-    
-    openNodes.remove(current);
-    if(containsNode(closedNodes,current))closedNodes.add(current);
-    
+    if(open.size()<1)continue;
+
+    Node current=
+    lowestScore(open);
+    //open.get(int(random(open.size())));
+    //open.get(0);
+    //open.get(open.size()-1);
+    if(current.done)continue;
+    current.done=true;
+    if(current.x==playerX&&current.y==playerY)loopDone=true;
+    if(containsNode(visited,current))continue;
+    current.done=true;
+    open=removeNode(open,current);
+    visited.add(current);
     ArrayList<Node>adjacent=current.getAdjacent();
-    
-    for(Node neighbour:adjacent){
-      if(containsNode(closedNodes,neighbour))continue;
-      
-      int tentativeScore=current.gscore+1;
-      if(neighbour.gscore>tentativeScore){
-        continue;
-      }
-      if(!openNodes.contains(neighbour))openNodes.add(neighbour);
-    }
+    open.addAll(adjacent);
   }
-  for(Node n:openNodes){
-    fill(map(n.gscore,0,10,0,255),255,255);
+  for(Node n:visited){
+    //if(n.done)fill(255,0,0);
+    //else 
+    float f=map(n.gscore,0,20,0,255);
+    fill(f,f,255);
     rect(n.x*16,n.y*16,16,16);
   }
-  //Path p=pathFind(new PVector(1,1),player.getGridPos());
-  //p.display(color(255,0,0),16.0);
-  //p.display(color(255, 0, 0));
-}
-boolean containsNode(ArrayList<Node>nodes,Node node){
-  for(Node n:nodes){
-    if(n.x==node.x&&n.y==node.y)return true;
+  for(Node n:open){
+    //if(n.done)fill(255,0,0);
+    //else 
+    float f=map(n.gscore,0,20,0,255);
+    fill(f,f,255);
+    rect(n.x*16,n.y*16,16,16);
   }
-  return false;
-}
-Node lowestScore(ArrayList<Node>nodes) {
-  int lowestScore=100000, lowestInd=0;
-  for (int i=0; i<nodes.size(); i++) {
-    if (nodes.get(i).gscore<lowestScore) {
-      lowestScore=nodes.get(i).gscore;
-      lowestInd=i;
+  Path p=new Path();
+  Node playerNode=null;
+  for(Node n:visited){
+    if(n.x==playerX&&n.y==playerY){
+      playerNode=n;
     }
   }
-  return nodes.get(lowestInd);
+  p.addPoint(playerNode);
+  Node n=playerNode;
+  for(;n!=null;){
+    p.addPoint(n.from);
+    n=n.from;
+  }
+  p.display(color(255,0,0),16.0);
+  //Path p=pathFind(new PVector(1,1),player.getGridPos());
+  //p.display(color(255, 0, 0));
+  
+  pushStyle();
+  player.display();
+  popStyle();
 }
-class Node {
-  int gscore;
-  int x, y;
-  Node from;
-  Node(int s, int a, int b, Node parent) {
-    gscore=s;
-    x=a;
-    y=b;
-    from=parent;
-  }
-  ArrayList<Node>getAdjacent(){
-    ArrayList<Node>list=new ArrayList<Node>();
-    Node xmi=xmi();
-    Node xpl=xpl();
-    Node ymi=ymi();
-    Node ypl=ypl();
-    if(xmi.valid())list.add(xmi);
-    if(xpl.valid())list.add(xpl);
-    if(ymi.valid())list.add(ymi);
-    if(ypl.valid())list.add(ypl);
-    return list;
-  }
-  boolean valid(){
-    return canGo(x,y);
-  }
-  Node xmi() {
-    return new Node(gscore+1, x-1, y, this);
-  }
-  Node xpl() {
-    return new Node(gscore+1, x+1, y, this);
-  }
-  Node ymi() {
-    return new Node(gscore+1, x, y-1, this);
-  }
-  Node ypl() {
-    return new Node(gscore+1, x, y+1, this);
-  }
-}
+int playerX=0,playerY=0;

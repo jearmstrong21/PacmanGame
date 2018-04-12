@@ -76,6 +76,9 @@ class Pacman {
   }
 
   void update() {
+    if(key==' '){
+      pendingDir=Dir.NONE;
+    }
     if (key=='a') {
       pendingDir=Dir.XMI;
     }

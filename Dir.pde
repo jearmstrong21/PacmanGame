@@ -1,5 +1,5 @@
 enum Dir{
-  XMI,XPL,YMI,YPL;
+  XMI,XPL,YMI,YPL,NONE;
 }
 int getDX(Dir d){
   if(d==Dir.XMI)return -1;
