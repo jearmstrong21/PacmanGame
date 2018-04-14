@@ -38,7 +38,7 @@ abstract class Ghost{
     PVector a=path.vecs.get(path.vecs.size()-1);
     
     Dir newDir=dirFromDXDY(PVector.sub(b,a));
-    if(!oppositeDirs(dir,newDir)&&off.x==0&&off.y==0)dir=newDir;
+    if(!oppositeDirs(dir,newDir)&&off.x==0&&off.y==0&&turns.contains(getGridPos()))dir=newDir;
     path.drawPoint(0,color(0,255,0),16);
     off.x+=getDX(dir)*ghostSpeed;
     off.y+=getDY(dir)*ghostSpeed;

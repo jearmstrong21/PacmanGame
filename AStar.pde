@@ -1,12 +1,12 @@
-int ASTAR_TX,ASTAR_TY;
-Path pathFind(int targetX,int targetY,int startX,int startY,int prohibX,int prohibY) {
+int ASTAR_TX, ASTAR_TY;
+Path pathFind(int targetX, int targetY, int startX, int startY, int prohibX, int prohibY) {
   ASTAR_TX=targetX;
   ASTAR_TY=targetY;
   ArrayList<Node>visited=new ArrayList<Node>();
   ArrayList<Node>open=new ArrayList<Node>();
   Node start=new Node(0, startX, startY, null);
   open.add(start);
-  visited.add(new Node(0, prohibX, prohibY, null));//dont let the path start off to the right
+  visited.add(new Node(10000000, prohibX, prohibY, null));//dont let the path start off to the right
   boolean loopDone=false;
   int i=0;
   while (!loopDone&&i<100) {
@@ -14,10 +14,11 @@ Path pathFind(int targetX,int targetY,int startX,int startY,int prohibX,int proh
     i++;
     Node current=
       lowestScore(open);
-    //open.get(int(random(open.size())));
-    //open.get(0);
-    //open.get(open.size()-1);
-    if (current.done)continue;
+    if (current.x==prohibX&&current.y==prohibY)continue;
+      //open.get(int(random(open.size())));
+      //open.get(0);
+      //open.get(open.size()-1);
+      if (current.done)continue;
     current.done=true;
     if (current.x==targetX&&current.y==targetY)loopDone=true;
     if (containsNode(visited, current))continue;
@@ -36,7 +37,7 @@ Path pathFind(int targetX,int targetY,int startX,int startY,int prohibX,int proh
   }
   p.addPoint(playerNode);
   Node n=playerNode;
-  if(n==null){
+  if (n==null) {
     n=lowestScore(open);
   }
   for (; n!=null; ) {

@@ -23,14 +23,14 @@ Ghost inky;
 boolean debugBlinky=false;
 boolean debugPinky=false;
 boolean debugClyde=false;
-boolean debugInky=true;
+boolean debugInky=false;
 
 boolean debugGrid=false;
-boolean debugTurns=false;
-boolean debugCollision=false;
+boolean debugTurns=true;
+boolean debugCollision=true;
 boolean debugPlayerPos=false;
 boolean debugPlayerMoves=false;
-boolean debugPlayerProjected=false;
+boolean debugPlayerProjected=true;
 boolean canGo(float x,float y){
   return canGo(int(x),int(y));
 }
@@ -138,13 +138,13 @@ void draw() {
   player.display();
   popStyle();
   
-  blinky.update();
+  //blinky.update();
   blinky.display();
   pinky.update();
   pinky.display();
-  clyde.update();
+  //clyde.update();
   clyde.display();
-  inky.update();
+  //inky.update();
   inky.display();
 }
 int playerX=0,playerY=0;
