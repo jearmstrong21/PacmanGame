@@ -4,7 +4,9 @@ abstract class Entity {
   int offX, offY;
 
   Dir curDir=Dir.NONE;
-
+  boolean on(Entity o){
+    return gridX==o.gridX&&gridY==o.gridY;
+  }
   boolean canGoInDir(Dir d) {
     int x=gridX+getDX(d);
     int y=gridY+getDY(d);

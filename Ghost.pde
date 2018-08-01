@@ -3,8 +3,6 @@ abstract class Ghost extends Entity {
   abstract color getColor();
   abstract Node getCorner();
 
-  int chaseCount=0;
-
   Ghost() {
     offX=0;
     offY=0;
@@ -13,20 +11,7 @@ abstract class Ghost extends Entity {
   }
 
   void display() {
-    chaseCount+=10;
-    println(chaseCount);
-    if (scatterMode) {
-      if (chaseCount>1000) {
-        chaseCount=0;
-        scatterMode=false;
-      }
-    } else {
-      if (chaseCount>700) {
-        chaseCount=0;
-        scatterMode=true;
-      }
-    }
-    calcPatgh();
+    calcPath();
     fill(getColor());
     noStroke();
     rect(gridX*cellSize+offX, gridY*cellSize+offY, cellSize, cellSize);
